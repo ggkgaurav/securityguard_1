@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Guard Check-In</title>
+    <script>
+        function sendWhatsApp() {
+            // Get guard's name
+            let guardName = prompt("Enter your name:");
+            if (!guardName) {
+                alert("You must enter your name to continue.");
+                return;
+            }
+
+            // Get current time
+            let now = new Date();
+            let formattedTime = now.toLocaleTimeString();
+            let formattedDate = now.toLocaleDateString();
+
+            // Get location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+                    let locationLink = `https://www.google.com/maps?q=${lat},${lon}`;
+
+                    // WhatsApp message content
+                    let message = `✅ *Security Check-In*  
+👮‍♂️ *Guard:* ${guardName}  
+📅 *Date:* ${formattedDate}  
+🕒 *Time:* ${formattedTime}  
+📍 *Location:* ${locationLink}`;
+
+                    // Replace with your WhatsApp Group invite link
+                    let groupLink = "https://api.whatsapp.com/send?phone=&text=" + encodeURIComponent(message);
+
+                    // Redirect to WhatsApp
+                    window.location.href = groupLink;
+                }, () => {
+                    alert("Location access denied. Please enable location.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</head>
+<body onload="sendWhatsApp()">
+    <h2>Redirecting to WhatsApp...</h2>
+</body>
+</html>
